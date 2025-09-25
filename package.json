@@ -1,0 +1,24 @@
+{
+    "name": "fitness-cli",
+    "version": "1.0.0",
+    "description": "CLI para gestión integral de gimnasio (clientes, planes, progreso, nutrición y finanzas)",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "keywords": [],
+    "author": "Carlos Villamizar y Fabian Pertuz",
+    "license": "MIT",
+    "dependencies": {
+        "chalk": "^4.1.2",
+        "dayjs": "^1.11.7",
+        "dotenv": "^16.0.0",
+        "inquirer": "^8.2.7",
+        "mongodb": "^5.8.0",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    }
+}
