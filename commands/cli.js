@@ -58,6 +58,7 @@ async function mainMenu(services) {
               message: 'Email',
               validate: v => {
                 if (!v.trim()) return '❌ El email es obligatorio';
+                if (!/^[a-zA-Z\s]+$/.test(v)) return '❌ Solo se permiten letras';
                 return true
               }
             },
