@@ -115,6 +115,14 @@ GESTIONGYM/
 - Validaciones: Definidas en `utils/validators.js`
 - Manejo de transacciones: Implementado en `withTransaction.js` para operaciones financieras.
 
+ ---
+
+## 📽️ Link del video explicativo
+
+👉 [**Clic aquí para ver el video en YouTube**](https://youtu.be/0W5vnnIiLls)
+
+
+
 ---
 
 ## 👥 Créditos
