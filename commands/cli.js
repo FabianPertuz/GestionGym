@@ -53,13 +53,14 @@ async function mainMenu(services) {
               message: 'Edad',
               validate: v => !isNaN(parseInt(v)) || '❌ Debe ser número'
             },
-            {
+           {
               name: 'email',
               message: 'Email',
               validate: v => {
                 if (!v.trim()) return '❌ El email es obligatorio';
-                if (!/^[a-zA-Z\s]+$/.test(v)) return '❌ Solo se permiten letras';
-                return true
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!regex.test(v)) return '❌ Email no válido';
+                return true;
               }
             },
             {
