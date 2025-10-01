@@ -22,6 +22,7 @@ async function mainMenu(services) {
     { name: '15. Registrar progreso', value: 'register_progress' },
     { name: '16. Ver progreso cronológico', value: 'view_progress' },
     { name: '17. Consultar balance', value: 'get_balance' },
+    [ name: '18  consultar backups', value 'backups'],
     { name: '0. Salir', value: 'exit' }
   ];
 
@@ -839,6 +840,64 @@ async function mainMenu(services) {
           }
           break;
         }
+        // ================= BACKUPS =================
+        case 'backups': {
+          const clients = await services.BackupsService.listClients();
+          if (clients.length === 0) {
+            console.log(chalk.yellow('⚠️ No hay clientes registrados.'));
+          } else {
+            console.log(chalk.green('\n=== LISTA DE CLIENTES ==='));
+            clients.forEach((c, i) => {
+              console.log(
+                `${i + 1}. ${c.name} (${c.age} años) - Email: ${c.contact?.email || 'N/A'}`
+              );
+            });
+          }
+          break;
+        }
+
+        case 'delete_backup_client': {
+          const { email } = await inquirer.prompt([
+            {
+              name: 'email',
+              message: 'Email del cliente a eliminar',
+              validate: async (v) => {
+                if (!v.trim()) return '❌ El email es obligatorio';
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!regex.test(v)) return '❌ Email no válido';
+                const exists = await services.BackupsService.findByEmail(v);
+                return exists ? true : '❌ Cliente no encontrado';
+              }
+            }
+          ]);
+
+          const client = await services.BackupsService.findByEmail(email);
+
+          const { confirm } = await inquirer.prompt([
+            {
+              type: 'confirm',
+              name: 'confirm',
+              message: `⚠️ ¿Seguro que deseas eliminar al cliente "${client.name}"? Esta acción no se puede deshacer.`,
+              default: false
+            }
+          ]);
+
+          if (!confirm) {
+            console.log(chalk.yellow('❌ Eliminación cancelada.'));
+            break;
+          }
+
+          try {
+            await services.BackupsServiceService.deleteClient(client._id);
+            console.log(chalk.green(`✅ Cliente "${client.name}" eliminado correctamente.`));
+          } catch (err) {
+            // Manejo de error cuando tiene contrato activo u otro problema
+            console.log(chalk.red('❌ No se pudo eliminar al cliente:'), err.message);
+          }
+
+          break;
+        }  
+            
 
 
         // ================== SALIR ==================
